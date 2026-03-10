@@ -1,0 +1,17 @@
+[
+  {
+    "judul": "Cara Belajar AI",
+    "deskripsi": "Ini adalah langkah-langkah memulai belajar AI dari dasar.",
+    "tanggal": "2023-10-01"
+  },
+  {
+    "judul": "Tutorial Node.js",
+    "deskripsi": "Panduan lengkap belajar Node.js untuk pemula.",
+    "tanggal": "2023-10-02"
+  },
+  {
+    "judul": "Mengenal Supabase",
+    "deskripsi": "Apa itu Supabase dan bagaimana cara menggunakannya.",
+    "tanggal": "2023-10-03"
+  }
+]

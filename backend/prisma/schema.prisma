@@ -1,0 +1,334 @@
+// Re-Route Database Schema - Enhanced Version
+// Reverse Logistics SaaS Platform for UMKMs
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// PLATFORM OWNER MODEL (Re-Route Company)
+// ============================================
+model PlatformOwner {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  subscriptions Subscription[]
+  transactions  Transaction[]
+  fraudAlerts   FraudAlert[]
+}
+
+// ============================================
+// STORE / MERCHANT (Multi-Store Support)
+// ============================================
+model Store {
+  id          String   @id @default(uuid())
+  name        String // Nama toko/brand
+  slug        String   @unique // Untuk URL white-label
+  logo        String? // URL logo toko
+  description String?
+  address     String?
+  phone       String?
+  email       String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Primary admin user (owner of this store)
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  // Relations
+  orders                 Order[]
+  returnRequests         ReturnRequest[]
+  inventory              Inventory[]
+  marketplaceConnections MarketplaceConnection[]
+  conversations          Conversation[]
+}
+
+// User/Admin/Client - Authentication
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password      String // Hashed password
+  name          String
+  phone         String?
+  businessName  String?
+  avatar        String? // URL avatar
+  role          String    @default("client") // admin, merchant, client
+  isActive      Boolean   @default(true)
+  emailVerified Boolean   @default(false)
+  lastLogin     DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  stores         Store[]
+  orders         Order[]
+  returnRequests ReturnRequest[]
+  inventory      Inventory[]
+  conversations  Conversation[]
+  messages       Message[]
+  sessions       Session[]
+}
+
+// Session for authentication
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+}
+
+// ============================================
+// ORDERS - Data pesanan dari e-commerce
+// ============================================
+model Order {
+  id            String   @id @default(uuid())
+  orderNumber   String   @unique // Nomor pesanan dari e-commerce
+  source        String   @default("manual") // shopee, tokopedia, tiktok, manual
+  customerName  String
+  customerPhone String
+  customerEmail String?
+  productName   String
+  productSku    String?
+  quantity      Int      @default(1)
+  price         Float
+  status        String   @default("pending") // pending, shipped, delivered, returned, cancelled
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  storeId String?
+  store   Store?  @relation(fields: [storeId], references: [id])
+
+  returnRequests ReturnRequest[]
+}
+
+// ============================================
+// RETURNS - Pengajuan retur dari konsumen
+// ============================================
+model ReturnRequest {
+  id              String    @id @default(uuid())
+  returnNumber    String    @unique // RTR-XXXX format
+  reason          String // Alasan retur
+  description     String?
+  photoUrl        String? // URL foto bukti
+  status          String    @default("pending") // pending, approved, shipped, received, rejected, dispositioned
+  courierName     String?
+  waybillNumber   String? // Resi dari kurir
+  waybillLabelUrl String? // URL label pengiriman (PDF)
+  barcodeUrl      String? // URL barcode
+  shippingCost    Float     @default(0)
+  processedAt     DateTime?
+  receivedAt      DateTime?
+  disposition     String? // AI disposition: restock, repair, writeoff
+  dispositionNote String? // Catatan dari AI analysis
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id])
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  storeId String?
+  store   Store?  @relation(fields: [storeId], references: [id])
+
+  // Relations
+  conversation        Conversation?
+  dispositionAnalysis ReturnDisposition?
+}
+
+// ============================================
+// INVENTORY - Stok gudang
+// ============================================
+model Inventory {
+  id            String    @id @default(uuid())
+  productSku    String    @unique
+  productName   String
+  quantity      Int       @default(0)
+  location      String    @default("GUDANG-UTAMA")
+  minStock      Int       @default(0)
+  maxStock      Int       @default(1000)
+  condition     String    @default("new") // new, refurbished, damaged
+  lastRestocked DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  storeId String?
+  store   Store?  @relation(fields: [storeId], references: [id])
+}
+
+// ============================================
+// MARKETPLACE CONNECTIONS (Omnichannel)
+// ============================================
+model MarketplaceConnection {
+  id           String    @id @default(uuid())
+  marketplace  String // shopee, tokopedia, tiktok
+  shopId       String // Shop ID from marketplace
+  shopName     String // Nama toko di marketplace
+  accessToken  String? // Encrypted access token
+  refreshToken String? // Encrypted refresh token
+  tokenExpiry  DateTime?
+  isActive     Boolean   @default(true)
+  lastSync     DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  storeId String
+  store   Store  @relation(fields: [storeId], references: [id])
+}
+
+// ============================================
+// SUBSCRIPTION (Monetization)
+// ============================================
+model Subscription {
+  id           String    @id @default(uuid())
+  plan         String // free, starter, professional, enterprise
+  status       String    @default("active") // active, cancelled, expired
+  monthlyPrice Float     @default(0)
+  startDate    DateTime
+  endDate      DateTime?
+  features     String? // JSON string of features
+
+  platformOwnerId String
+  platformOwner   PlatformOwner @relation(fields: [platformOwnerId], references: [id])
+
+  storeId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ============================================
+// TRANSACTIONS (Revenue Tracking)
+// ============================================
+model Transaction {
+  id          String  @id @default(uuid())
+  type        String // subscription_fee, service_fee, logistics_kickback
+  amount      Float
+  currency    String  @default("IDR")
+  status      String  @default("pending") // pending, completed, failed
+  description String?
+  metadata    String? // JSON additional data
+
+  platformOwnerId String
+  platformOwner   PlatformOwner @relation(fields: [platformOwnerId], references: [id])
+
+  storeId  String?
+  returnId String?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+// ============================================
+// FRAUD ALERTS (Detection System)
+// ============================================
+model FraudAlert {
+  id          String  @id @default(uuid())
+  type        String // suspicious_return_pattern, fake_photo, multiple_returns
+  severity    String  @default("low") // low, medium, high, critical
+  status      String  @default("open") // open, investigating, resolved, dismissed
+  description String
+  evidence    String? // JSON with evidence data
+  resolution  String?
+
+  platformOwnerId String
+  platformOwner   PlatformOwner @relation(fields: [platformOwnerId], references: [id])
+
+  customerId String // Customer who triggered the alert
+  returnId   String?
+
+  createdAt  DateTime  @default(now())
+  resolvedAt DateTime?
+}
+
+// ============================================
+// CONVERSATION (Resolution Center - Chat)
+// ============================================
+model Conversation {
+  id     String @id @default(uuid())
+  type   String @default("return") // return, general
+  status String @default("open") // open, resolved, closed
+  
+  // Chat status for escalation flow: bot -> waiting_admin -> active -> resolved
+  chatStatus String @default("bot") // bot, waiting_admin, active, resolved
+
+  storeId String
+  store   Store  @relation(fields: [storeId], references: [id])
+
+  userId String // Customer
+  user   User   @relation(fields: [userId], references: [id])
+
+  returnId String?        @unique // Optional linked return
+  return   ReturnRequest? @relation(fields: [returnId], references: [id])
+
+  messages Message[]
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  resolvedAt DateTime?
+}
+
+model Message {
+  id         String @id @default(uuid())
+  content    String
+  senderType String // customer, merchant, system
+  senderId   String
+
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+
+  userId String // User who sent/received
+  user   User   @relation(fields: [userId], references: [id])
+
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+// ============================================
+// AI DISPOSITION (Smart Analysis)
+// ============================================
+model ReturnDisposition {
+  id             String  @id @default(uuid())
+  recommendation String // restock, repair, writeoff
+  confidence     Float // 0-100
+  reasoning      String? // AI explanation
+  condition      String? // good, fair, poor
+  estimatedValue Float? // Estimated residual value
+
+  // AI Analysis Details
+  damageDetected Boolean @default(false)
+  damageType     String? // scratched, broken, missing_parts, etc
+  wearLevel      String? // new, light, moderate, heavy
+
+  // Photo analysis results
+  photoAnalysis String? // JSON with detailed photo analysis
+
+  returnId String        @unique
+  return   ReturnRequest @relation(fields: [returnId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+</parameter>
+</create_file>
+</minimax:tool_call>

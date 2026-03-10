@@ -1,0 +1,227 @@
+{
+  "adminAccounts": [
+    {
+      "store": {
+        "name": "UMM Store",
+        "slug": "umm-store",
+        "description": "Toko fashion mahasiswa UMM Makassar",
+        "category": "Fashion"
+      },
+      "user": {
+        "email": "umm.store@reroute.id",
+        "name": "Ahmad Faisal",
+        "phone": "+6285234567801",
+        "businessName": "UMM Store",
+        "role": "merchant"
+      },
+      "password": "password123"
+    },
+    {
+      "store": {
+        "name": "Kopi Kampus",
+        "slug": "kopi-kampus",
+        "description": "Kedai kopi khas Makassar untuk mahasiswa",
+        "category": "F&B"
+      },
+      "user": {
+        "email": "kopikampus@reroute.id",
+        "name": "Nurul Hidayati",
+        "phone": "+6285234567802",
+        "businessName": "Kopi Kampus",
+        "role": "merchant"
+      },
+      "password": "password123"
+    },
+    {
+      "store": {
+        "name": "Gadget Second Makassar",
+        "slug": "gadget-second-makassar",
+        "description": "Toko gadget second berkualitas di Makassar",
+        "category": "Elektronik"
+      },
+      "user": {
+        "email": "gadgetsecond@reroute.id",
+        "name": "Rizal Pratama",
+        "phone": "+6285234567803",
+        "businessName": "Gadget Second Makassar",
+        "role": "merchant"
+      },
+      "password": "password123"
+    },
+    {
+      "store": {
+        "name": "Hijab UMM",
+        "slug": "hijab-umm",
+        "description": "Toko hijab moderna dan tradisional",
+        "category": "Fashion"
+      },
+      "user": {
+        "email": "hijabumm@reroute.id",
+        "name": "Siti Aisyah",
+        "phone": "+6285234567804",
+        "businessName": "Hijab UMM",
+        "role": "merchant"
+      },
+      "password": "password123"
+    },
+    {
+      "store": {
+        "name": "Catering Mahasiswa",
+        "slug": "catering-mahasiswa",
+        "description": "Catering sehat dan affordable untuk mahasiswa",
+        "category": "F&B"
+      },
+      "user": {
+        "email": "cateringmhs@reroute.id",
+        "name": "Hasanuddin",
+        "phone": "+6285234567805",
+        "businessName": "Catering Mahasiswa",
+        "role": "merchant"
+      },
+      "password": "password123"
+    },
+    {
+      "store": {
+        "name": "Percetakan Al-Amin",
+        "slug": "percetakan-al-amin",
+        "description": "Jasa percetakan dan desain untuk mahasiswa",
+        "category": "Jasa"
+      },
+      "user": {
+        "email": "percetakan@reroute.id",
+        "name": "Baharuddin",
+        "phone": "+6285234567806",
+        "businessName": "Percetakan Al-Amin",
+        "role": "merchant"
+      },
+      "password": "password123"
+    },
+    {
+      "store": {
+        "name": "Toko Sembako Berkah",
+        "slug": "sembako-berkah",
+        "description": "Toko kebutuhan pokok mahasiswa",
+        "category": "Retail"
+      },
+      "user": {
+        "email": "sembako@reroute.id",
+        "name": "Mardiana",
+        "phone": "+6285234567807",
+        "businessName": "Toko Sembako Berkah",
+        "role": "merchant"
+      },
+      "password": "password123"
+    },
+    {
+      "store": {
+        "name": "Snack Kering UMKM",
+        "slug": "snack-kering-umkm",
+        "description": "Kerupuk dan snack kering khas Sulawesi",
+        "category": "F&B"
+      },
+      "user": {
+        "email": "snackkering@reroute.id",
+        "name": "Andi Wijaya",
+        "phone": "+6285234567808",
+        "businessName": "Snack Kering UMKM",
+        "role": "merchant"
+      },
+      "password": "password123"
+    },
+    {
+      "store": {
+        "name": "Thrifting UMM",
+        "slug": "thrifting-umm",
+        "description": "Pakaian second berkualitas untuk mahasiswa",
+        "category": "Fashion"
+      },
+      "user": {
+        "email": "thrifting@reroute.id",
+        "name": "Putriani",
+        "phone": "+6285234567809",
+        "businessName": "Thrifting UMM",
+        "role": "merchant"
+      },
+      "password": "password123"
+    },
+    {
+      "store": {
+        "name": "Jasa Titip UMM",
+        "slug": "jasatitip-umm",
+        "description": "Jasa titip belanja dan kurir kampus",
+        "category": "Kurir"
+      },
+      "user": {
+        "email": "jasatitip@reroute.id",
+        "name": "Khaerul Anwar",
+        "phone": "+6285234567810",
+        "businessName": "Jasa Titip UMM",
+        "role": "merchant"
+      },
+      "password": "password123"
+    }
+  ],
+  "clientAccounts": [
+    {
+      "email": "budi.santoso@email.com",
+      "name": "Budi Santoso",
+      "phone": "+6289876543201",
+      "address": "Jl. Pettarani No. 45, Makassar"
+    },
+    {
+      "email": "siti.rahayu@email.com",
+      "name": "Siti Rahayu",
+      "phone": "+6289876543202",
+      "address": "Jl. Perintis Kemerdekaan No. 12, Makassar"
+    },
+    {
+      "email": "ahmad.wijaya@email.com",
+      "name": "Ahmad Wijaya",
+      "phone": "+6289876543203",
+      "address": "Jl. Toddopuli Raya No. 8, Makassar"
+    },
+    {
+      "email": "dewi.kartika@email.com",
+      "name": "Dewi Kartika",
+      "phone": "+6289876543204",
+      "address": "Jl. AP Pettarani No. 33, Makassar"
+    },
+    {
+      "email": "rudi.hermawan@email.com",
+      "name": "Rudi Hermawan",
+      "phone": "+6289876543205",
+      "address": "Jl. Rappocini Raya No. 21, Makassar"
+    },
+    {
+      "email": "nur.haliza@email.com",
+      "name": "Nur Haliza",
+      "phone": "+6289876543206",
+      "address": "Jl. Bintang No. 17, Makassar"
+    },
+    {
+      "email": "japar.sidique@email.com",
+      "name": "Japar Sidique",
+      "phone": "+6289876543207",
+      "address": "Jl. Veteran Utara No. 9, Makassar"
+    },
+    {
+      "email": "aminah.tahir@email.com",
+      "name": "Aminah Tahir",
+      "phone": "+6289876543208",
+      "address": "Jl. Daeng Tata No. 5, Makassar"
+    },
+    {
+      "email": "tono.abdul@email.com",
+      "name": "Tono Abdul",
+      "phone": "+6289876543209",
+      "address": "Jl. Sultan Alauddin No. 28, Makassar"
+    },
+    {
+      "email": "kartika.sari@email.com",
+      "name": "Kartika Sari",
+      "phone": "+6289876543210",
+      "address": "Jl. Nuri No. 14, Makassar"
+    }
+  ],
+  "defaultPassword": "password123"
+}
